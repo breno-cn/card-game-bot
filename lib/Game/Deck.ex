@@ -1,6 +1,6 @@
 defmodule Deck do
   def new do
-    numbers = [:one, :two, :three, :four, :five, :six, :seve, :eight, :nine, :ten, :jack, :queen, :king]
+    numbers = [:ace, :two, :three, :four, :five, :six, :seven, :eight, :nine, :ten, :jack, :queen, :king]
     suits = [:club, :diamond, :heart, :spade]
 
     for number <- numbers, suit <- suits do

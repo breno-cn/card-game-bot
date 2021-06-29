@@ -14,6 +14,10 @@ defmodule GameServer do
     GenServer.call(server, :state)
   end
 
+  def get_player_cards(server, player_id) do
+    GenServer.call(server, {:get_cards, player_id})
+  end
+
   # Server "backend"
   @impl true
   def init(game) do
@@ -31,5 +35,14 @@ defmodule GameServer do
   @impl true
   def handle_call(:state, _from, game) do
     {:reply, game, game}
+  end
+
+  def handle_call({:get_cards, player_id}, _from, game) do
+    # player = Enum.find(game.players, fn {id, _player} -> id == player_id end)
+    player =
+      game.players
+      |> Enum.find(fn player -> player.id == player_id end)
+
+    {:reply, player.cards, game}
   end
 end

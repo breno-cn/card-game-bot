@@ -1,7 +1,7 @@
 defmodule Pair do
-  defstruct player1: nil, player2: nil, points: nil
+  defstruct player_ids: [], points: nil
 
-  def new(player1, player2) do
-    %Pair{player1: player1, player2: player2, points: 0}
+  def new(player_ids) do
+    %Pair{player_ids: player_ids, points: 0}
   end
 end

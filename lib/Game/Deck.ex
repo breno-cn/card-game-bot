@@ -7,4 +7,14 @@ defmodule Deck do
       Card.new(number, suit)
     end
   end
+
+  def shuffle([]), do: []
+
+  def shuffle(deck) do
+    index = :rand.uniform(length(deck)) - 1
+    card = Enum.at(deck, index)
+    new_deck = List.delete(deck, card)
+
+    [card] ++ shuffle(new_deck)
+  end
 end

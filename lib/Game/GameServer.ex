@@ -6,8 +6,12 @@ defmodule GameServer do
     GenServer.start_link(__MODULE__, game)
   end
 
-  def testing(server) do
-    GenServer.call(server, :test)
+  def start(server) do
+    GenServer.call(server, :start)
+  end
+
+  def get_state(server) do
+    GenServer.call(server, :state)
   end
 
   # Server "backend"
@@ -17,8 +21,15 @@ defmodule GameServer do
   end
 
   @impl true
-  def handle_call(:test, _from, game) do
-    # IO.inspect(game)
-    {:reply, :testing, game}
+  def handle_call(:start, _from, game) do
+    shuffled = Deck.shuffle(game.deck)
+    started = %{game | deck: shuffled, current_player: 0}
+
+    {:reply, :ok, started}
+  end
+
+  @impl true
+  def handle_call(:state, _from, game) do
+    {:reply, game, game}
   end
 end

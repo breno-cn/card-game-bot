@@ -8,20 +8,33 @@ defmodule GameState do
             current_player: 0
 
   def new(players, pairs, deck) do
-    %GameState{players: players, pairs: pairs, deck: deck, winner: nil}
+    indexed =
+      players
+      |> Enum.map(fn player -> player.id end)
+      |> Enum.zip(players)
+      |> Map.new
+
+    %GameState{players: indexed, pairs: pairs, deck: deck, winner: nil}
   end
 
   def distribute_cards(game) do
-    players_with_cards = game.deck
-    |> Enum.take(12)
-    |> Enum.chunk_every(3)
-    |> Enum.map(fn chunk -> %{cards: chunk} end)
-    |> Enum.zip(game.players)
-    |> Enum.map(fn {%{cards: cards}, player} -> Map.put(player, :cards, cards) end)
+    hands =
+      game.deck
+      |> Enum.take(12)
+      |> Enum.chunk_every(3)
 
-    new_deck = Enum.drop(game.deck, 12)
+    players_with_hands =
+      game.players
+      |> Enum.zip(hands)
+      |> Enum.map(fn {{_id, player}, cards} -> %{player | cards: cards} end)
 
-    %{game | players: players_with_cards, deck: new_deck}
+    indexed_players =
+      players_with_hands
+      |> Enum.map(fn player -> player.id end)
+      |> Enum.zip(players_with_hands)
+      |> Map.new
+
+    %{game | players: indexed_players}
   end
 
   def debug() do

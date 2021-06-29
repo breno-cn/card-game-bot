@@ -2,6 +2,7 @@ defmodule GameState do
   defstruct players: nil,
             pairs: nil,
             deck: nil,
+            pile: [],
             winner: nil,
             running: true,
             current_player: 0

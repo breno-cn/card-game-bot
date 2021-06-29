@@ -18,10 +18,17 @@ defmodule GameState do
   end
 
   def distribute_cards(game) do
+    create_index = fn cards ->
+      1..length(cards)
+      |> Stream.zip(cards)
+      |> Enum.into(%{})
+    end
+
     hands =
       game.deck
       |> Enum.take(12)
       |> Enum.chunk_every(3)
+      |> Enum.map(create_index)
 
     players_with_hands =
       game.players

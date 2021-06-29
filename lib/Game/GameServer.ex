@@ -23,7 +23,7 @@ defmodule GameServer do
   @impl true
   def handle_call(:start, _from, game) do
     shuffled = Deck.shuffle(game.deck)
-    started = %{game | deck: shuffled, current_player: 0}
+    started = GameState.distribute_cards(%{game | deck: shuffled})
 
     {:reply, :ok, started}
   end
